@@ -19,10 +19,9 @@
     </form>
 </div>
 <div>
-    <form action="/filter" method="post">
-        <input type="text" name="filter" placeholder="search by tag">
-        <input type="submit" name="search" value="search">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <form action="/main" method="get">
+        <input type="text" name="filter" placeholder="search by tag" th:value="${filter}">
+        <button type="submit">search</button>
     </form>
 </div>
 <div>
@@ -32,13 +31,15 @@
             <td>Message id</td>
             <td>Message</td>
             <td>Tag</td>
+            <td>Author</td>
         </tr>
         </thead>
         <tbody>
         <tr th:each="message : ${messages}">
-            <td th:text="${message.id}"/>
-            <td th:text="${message.text}"/>
-            <td th:text="${message.tag}"/>
+            <td th:text="${message.id}"></td>
+            <td th:text="${message.text}"></td>
+            <td th:text="${message.tag}"></td>
+            <td th:text="${message.authorName}"></td>
         </tr>
         </tbody>
     </table>

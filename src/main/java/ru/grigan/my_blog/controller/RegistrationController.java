@@ -14,10 +14,13 @@ import java.util.Collections;
 
 @Controller
 public class RegistrationController {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder encoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
+
+    public RegistrationController(UserRepository userRepository, PasswordEncoder encoder) {
+        this.userRepository = userRepository;
+        this.encoder = encoder;
+    }
 
     @PostMapping("/reg")
     public String addUser(User user, Model model) {
