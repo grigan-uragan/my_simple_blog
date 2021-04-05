@@ -1,18 +1,26 @@
 package ru.grigan.my_blog.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ru.grigan.my_blog.model.Message;
 import ru.grigan.my_blog.model.User;
 import ru.grigan.my_blog.repository.MessageRepository;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 @Controller
 public class GreetingController {
     private final MessageRepository messageRepository;
+    @Value("${upload.path}")
+    private String uploadPath;
 
     public GreetingController(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
@@ -42,8 +50,19 @@ public class GreetingController {
     @PostMapping("/save")
     public String addMessage(@AuthenticationPrincipal User user,
                              @RequestParam String text,
-                             @RequestParam String tag) {
+                             @RequestParam String tag,
+                             @RequestParam (name = "file")MultipartFile file) throws IOException {
         Message message = Message.of(text, tag, user);
+        if (file != null && !file.isEmpty()) {
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String uuid = UUID.randomUUID().toString();
+            String filename = uuid + "." + file.getOriginalFilename();
+            message.setFilename(filename);
+            file.transferTo(new File(uploadPath + "/" + filename));
+        }
         messageRepository.save(message);
         return "redirect:/main";
     }

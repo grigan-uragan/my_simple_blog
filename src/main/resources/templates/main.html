@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <div>
@@ -17,9 +18,10 @@
     </span>
 </div>
 <div>
-    <form method="post" action="/save">
+    <form method="post" action="/save" enctype="multipart/form-data">
         <input type="text" name="text" placeholder="Enter your message">
         <input type="text" name="tag" placeholder="write your tag">
+        <input type="file" name="file">
         <input type="submit" name="submit" value="submit">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     </form>
@@ -46,6 +48,9 @@
             <td th:text="${message.text}"></td>
             <td th:text="${message.tag}"></td>
             <td th:text="${message.authorName}"></td>
+            <td th:if="${message.filename} != null">
+                <img th:attr="src='/img/' + ${message.filename}">
+            </td>
         </tr>
         </tbody>
     </table>
