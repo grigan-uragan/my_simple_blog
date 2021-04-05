@@ -5,7 +5,44 @@
     <title>Title</title>
 </head>
 <body>
-<div th:text="${some}">
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<div>
+    <form method="post" action="/save">
+        <input type="text" name="text" placeholder="Enter your message">
+        <input type="text" name="tag" placeholder="write your tag">
+        <input type="submit" name="submit" value="submit">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    </form>
+</div>
+<div>
+    <form action="/filter" method="post">
+        <input type="text" name="filter" placeholder="search by tag">
+        <input type="submit" name="search" value="search">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    </form>
+</div>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <td>Message id</td>
+            <td>Message</td>
+            <td>Tag</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="message : ${messages}">
+            <td th:text="${message.id}"/>
+            <td th:text="${message.text}"/>
+            <td th:text="${message.tag}"/>
+        </tr>
+        </tbody>
+    </table>
+
 </div>
 </body>
 </html>
