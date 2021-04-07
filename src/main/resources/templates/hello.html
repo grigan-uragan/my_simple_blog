@@ -1,12 +1,15 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout/index}">
 <head>
-    <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Hello</title>
 </head>
 <body>
-<h1 th:text="'Hello, user!'" />
-<a href="/main">Main page</a>
+<div layout:fragment="replace_fragment">
+    <h3>This My Simple Blog application!</h3>
+    <h4>Let's write message</h4>
+
+</div>
 </body>
 </html>

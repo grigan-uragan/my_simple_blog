@@ -51,7 +51,8 @@ public class GreetingController {
     public String addMessage(@AuthenticationPrincipal User user,
                              @RequestParam String text,
                              @RequestParam String tag,
-                             @RequestParam (name = "file")MultipartFile file) throws IOException {
+                             @RequestParam (name = "file")MultipartFile file,
+                             Model model) throws IOException {
         Message message = Message.of(text, tag, user);
         if (file != null && !file.isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -64,6 +65,7 @@ public class GreetingController {
             file.transferTo(new File(uploadPath + "/" + filename));
         }
         messageRepository.save(message);
-        return "redirect:/main";
+        model.addAttribute("messages", messageRepository.findAll());
+        return "main";
     }
 }

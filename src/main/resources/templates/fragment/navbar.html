@@ -1,0 +1,29 @@
+<th:block xmlns:th="http://thymeleaf.org"
+          xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+          th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">My Simple Blog</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/main">Messages</a>
+                    </li>
+                    <li class="nav-item" th:if="${#request.userPrincipal}">
+                        <a th:if="${#request.userPrincipal.principal.isAdmin()}" class="nav-link" href="/user">User List</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="mx-3 navbar-text" th:text="${#request.remoteUser == null ? 'Quest' : #request.remoteUser }"></div>
+            <div th:if="${#request.remoteUser}">
+                <div th:insert="fragment/logout::logout"></div>
+            </div>
+        </div>
+    </nav>
+</th:block>

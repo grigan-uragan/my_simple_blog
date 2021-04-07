@@ -1,60 +1,66 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="https://www.thymeleaf.org">
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/index}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Main</title>
 </head>
 <body>
-<div>
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
+<div layout:fragment="replace_fragment">
+    <div class="form-row my-3">
+        <div class="form-group col-md-6">
+            <form action="/main" method="get">
+                <div class="row">
+                    <div class="col-5">
+                        <input class="form-control" type="text" name="filter" placeholder="search by tag"
+                               th:value="${filter}">
+                    </div>
+                    <div class="col-7">
+                        <button class="btn btn-primary" type="submit">search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <a class="btn btn-primary mt-3" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Add new Message
+        </a>
+        <div class="form-row collapse" id="collapseExample">
+            <form method="post" action="/save" enctype="multipart/form-data">
+                <div class="row my-3">
+                    <div class="col-auto">
+                        <input type="text" name="text" placeholder="Enter your message" class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" name="tag" placeholder="write your tag" class="form-control">
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-auto">
+                            <input type="file" name="file" class="form-control">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" name="submit" class="btn btn-primary">submit</button>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </form>
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col-auto card mx-2" style="width: 18rem;" th:each="message : ${messages}">
+            <div th:if="${message.filename} != null">
+                <img class="card-img-top" th:attr="src='/img/' + ${message.filename}">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title" th:text="${message.tag}"></h5>
+                <p class="card-text" th:text="${message.text}"></p>
+            </div>
+            <div class="card-footer" th:text="${message.authorName}"></div>
+        </div>
+    </div>
 </div>
-<div>
-    <span>
-        <a th:href="@{/user}">users list</a>
-    </span>
-</div>
-<div>
-    <form method="post" action="/save" enctype="multipart/form-data">
-        <input type="text" name="text" placeholder="Enter your message">
-        <input type="text" name="tag" placeholder="write your tag">
-        <input type="file" name="file">
-        <input type="submit" name="submit" value="submit">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-    </form>
-</div>
-<div>
-    <form action="/main" method="get">
-        <input type="text" name="filter" placeholder="search by tag" th:value="${filter}">
-        <button type="submit">search</button>
-    </form>
-</div>
-<div>
-    <table>
-        <thead>
-        <tr>
-            <td>Message id</td>
-            <td>Message</td>
-            <td>Tag</td>
-            <td>Author</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="message : ${messages}">
-            <td th:text="${message.id}"></td>
-            <td th:text="${message.text}"></td>
-            <td th:text="${message.tag}"></td>
-            <td th:text="${message.authorName}"></td>
-            <td th:if="${message.filename} != null">
-                <img th:attr="src='/img/' + ${message.filename}">
-            </td>
-        </tr>
-        </tbody>
-    </table>
 
-</div>
 </body>
 </html>
