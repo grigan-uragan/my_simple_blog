@@ -5,6 +5,6 @@ import ru.grigan.my_blog.model.Message;
 
 import java.util.List;
 
-public interface MessageRepository extends CrudRepository<Message, Integer> {
+public interface MessageRepository extends CrudRepository<Message, Long> {
     List<Message> findByTag(String tag);
 }

@@ -18,6 +18,9 @@
                     <li class="nav-item" th:if="${#request.userPrincipal}">
                         <a th:if="${#request.userPrincipal.principal.isAdmin()}" class="nav-link" href="/user">User List</a>
                     </li>
+                    <li class="nav-item" th:if="${#request.userPrincipal}">
+                        <a class="nav-link" href="/user/profile">Profile</a>
+                    </li>
                 </ul>
             </div>
             <div class="mx-3 navbar-text" th:text="${#request.remoteUser == null ? 'Quest' : #request.remoteUser }"></div>
