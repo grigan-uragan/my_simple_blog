@@ -1,18 +1,14 @@
 package ru.grigan.my_blog.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import ru.grigan.my_blog.model.Role;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import ru.grigan.my_blog.model.User;
-import ru.grigan.my_blog.repository.UserRepository;
+import ru.grigan.my_blog.model.dto.CaptchaResponseDto;
 import ru.grigan.my_blog.service.UserService;
 
 import javax.validation.Valid;
@@ -20,22 +16,35 @@ import java.util.Collections;
 
 @Controller
 public class RegistrationController {
+    private static final String CAPTCHA_URL =
+            "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
     private final UserService service;
+    private final RestTemplate restTemplate;
+    @Value("${recaptcha.secret}")
+    private String secret;
 
-    public RegistrationController(UserService service) {
+    public RegistrationController(UserService service, RestTemplate restTemplate) {
         this.service = service;
+        this.restTemplate = restTemplate;
     }
 
     @PostMapping("/reg")
     public String addUser(
+            @RequestParam("g-recaptcha-response") String captchaResponse,
             @Valid @ModelAttribute("user") User user,
             BindingResult bindingResult,
             Model model) {
+        String url = String.format(CAPTCHA_URL, secret, captchaResponse);
+        CaptchaResponseDto responseDto =
+                restTemplate.postForObject(url, Collections.EMPTY_LIST, CaptchaResponseDto.class);
+        if (!responseDto.isSuccess()) {
+            model.addAttribute("captchaError", "Fill captcha");
+        }
         if (user.getPassword() != null && !user.getPassword().equals(user.getPassword2())) {
             bindingResult.addError(new FieldError("user", "password2",
                     "different passwords"));
         }
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() || !responseDto.isSuccess()) {
             return "registration";
         }
         if (!service.addUser(user)) {
