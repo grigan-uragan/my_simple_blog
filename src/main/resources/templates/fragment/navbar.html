@@ -1,4 +1,4 @@
-<th:block xmlns:th="http://thymeleaf.org"
+<div xmlns:th="http://www.thymeleaf.org"
           xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
           th:fragment="navbar">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -13,13 +13,16 @@
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/main">Messages</a>
+                        <a class="nav-link" href="/main">All messages</a>
                     </li>
                     <li class="nav-item" th:if="${#request.userPrincipal}">
                         <a th:if="${#request.userPrincipal.principal.isAdmin()}" class="nav-link" href="/user">User List</a>
                     </li>
                     <li class="nav-item" th:if="${#request.userPrincipal}">
                         <a class="nav-link" href="/user/profile">Profile</a>
+                    </li>
+                    <li class="nav-item" th:if="${#request.userPrincipal}">
+                        <a class="nav-link" th:href="@{/user-messages/{id}(id=${#request.userPrincipal.principal.id})}">My messages</a>
                     </li>
                 </ul>
             </div>
@@ -29,4 +32,4 @@
             </div>
         </div>
     </nav>
-</th:block>
+</div>

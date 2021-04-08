@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/index}">
+<head>
+    <title>My messages</title>
+</head>
+<body>
+<div layout:fragment="replace_fragment">
+    <div th:if="${isCurrentUser}">
+        <div th:insert="fragment/messageEdit :: messageEdit"></div>
+    </div>
+    <div th:insert="fragment/messageList :: messageList"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<div  th:fragment="messageList"  xmlns:th="http://www.thymeleaf.org">
+    <div class="row my-3">
+        <div class="col-2 card mx-2" style="width: 18rem;" th:each="message : ${messages}">
+            <div th:if="${message.filename} != null">
+                <img class="card-img-top" th:attr="src='/img/' + ${message.filename}">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title" th:text="${message.tag}"></h5>
+                <p class="card-text" th:text="${message.text}"></p>
+            </div>
+            <div class="card-footer" >
+                <a th:href="@{/user-messages/{userId}(userId=${message.author.id})}"
+                   th:text="${message.authorName}"></a>
+                <a th:if="${message.author.id} == ${#request.userPrincipal.principal.id}" th:href="@{/user-messages/{userId}/(userId=${message.author.id},
+                 message=${message.id})}" class="btn btn-primary">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>
