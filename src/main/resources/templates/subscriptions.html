@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/index}">
+<head>
+    <title>User List</title>
+</head>
+<body>
+<div layout:fragment="replace_fragment">
+    <div class="container">
+        <h2 th:text="${type}"></h2>
+        <h3 th:text="${userChanel.username}"></h3>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="user : ${users}">
+                <a th:href="@{/user-messages/{id}(id=${user.id})}" th:text="${user.username}"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

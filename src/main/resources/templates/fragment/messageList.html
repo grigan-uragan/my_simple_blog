@@ -1,5 +1,32 @@
 <div  th:fragment="messageList"  xmlns:th="http://www.thymeleaf.org">
     <div class="row my-3">
+        <div th:if="${userChanel}" >
+            <h5 th:text="${userChanel.username}"></h5>
+            <div th:if="${isCurrentUser} == false">
+                <a th:href="${isSubscriber} ? @{/user/unsubscribe/{chanelId}(chanelId = ${userChanel.id})} : @{/user/subscribe/{chanelId}(chanelId = ${userChanel.id})}"
+                   th:text="${isSubscriber} ? 'usubscribe' : 'subscribe'" class="btn btn-info"></a>
+            </div>
+            <div class="row my-3">
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title" >Subscriptions</h5>
+                            <a th:href="@{/user/subscriptions/{chanelId}/list (chanelId = ${userChanel.id})}" class="card-link" th:text="${subscriptionsCount}">0</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Subscribers</h5>
+                            <a th:href="@{/user/subscribers/{chanelId}/list (chanelId = ${userChanel.id})}" class="card-link" th:text="${subscribersCount}">0</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="col-2 card mx-2" style="width: 18rem;" th:each="message : ${messages}">
             <div th:if="${message.filename} != null">
                 <img class="card-img-top" th:attr="src='/img/' + ${message.filename}">
