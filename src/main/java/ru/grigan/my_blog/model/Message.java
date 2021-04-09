@@ -10,7 +10,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Please fill message")
-    @Length(max = 2048, message = "Message contains too many characters" )
+    @Length(max = 2048, message = "Message contains too many characters")
     private String text;
     @NotBlank(message = "Please fill tag field")
     @Length(min = 1, max = 255, message = "Tag length must be between 1 and 255 symbols!")

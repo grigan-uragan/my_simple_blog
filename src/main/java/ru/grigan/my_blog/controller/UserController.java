@@ -72,6 +72,7 @@ public class UserController {
         userService.unsubscribe(currentUser, user);
         return "redirect:/user-messages/" + user.getId();
     }
+
     @GetMapping("/{type}/{user}/list")
     public String getUserList(Model model,
                               @PathVariable("type") String type,

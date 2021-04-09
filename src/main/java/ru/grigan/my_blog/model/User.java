@@ -35,14 +35,14 @@ public class User implements UserDetails {
     private Set<Message> messages;
     @ManyToMany
     @JoinTable(name = "user_subscriptions",
-            joinColumns = {@JoinColumn( name = "subscriber_id")},
+            joinColumns = {@JoinColumn(name = "subscriber_id")},
     inverseJoinColumns = {@JoinColumn(name = "chanel_id")})
     private Set<User> subscribers = new HashSet<>();
     @ManyToMany
     @JoinTable(name = "user_subscriptions",
-            joinColumns = {@JoinColumn( name = "chanel_id")},
+            joinColumns = {@JoinColumn(name = "chanel_id")},
             inverseJoinColumns = {@JoinColumn(name = "subscriber_id")})
-    private Set<User> subscriptions= new HashSet<>();
+    private Set<User> subscriptions = new HashSet<>();
 
     public Long getId() {
         return id;

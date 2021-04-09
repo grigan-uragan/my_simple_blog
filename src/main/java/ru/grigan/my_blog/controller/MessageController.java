@@ -24,7 +24,6 @@ public class MessageController {
     @Value("${upload.path}")
     private String uploadPath;
 
-
     public MessageController(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
     }
@@ -69,7 +68,7 @@ public class MessageController {
                                   @PathVariable Long user,
                                   @RequestParam("id") Message message,
                                   @RequestParam("text") String text,
-                                  @RequestParam("tag") String tag){
+                                  @RequestParam("tag") String tag) {
         if (message.getAuthor().equals(currentUser)) {
             if (!StringUtils.isEmpty(text)) {
                 message.setText(text);

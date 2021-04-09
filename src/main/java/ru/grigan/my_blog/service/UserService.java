@@ -20,7 +20,8 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder encoder;
     private final MailService mailService;
 
-    public UserService(UserRepository repository, PasswordEncoder encoder, MailService mailService) {
+    public UserService(UserRepository repository,
+                       PasswordEncoder encoder, MailService mailService) {
         this.repository = repository;
         this.encoder = encoder;
         this.mailService = mailService;
@@ -59,7 +60,6 @@ public class UserService implements UserDetailsService {
         return repository.findAll();
     }
 
-
     public void saveUser(User user, String username, Map<String, String> form) {
         user.setUsername(username);
         Set<String> roles =
@@ -79,7 +79,7 @@ public class UserService implements UserDetailsService {
                 || (userEmail != null && !userEmail.equals(email)));
         if (isEmailChanged) {
             user.setEmail(email);
-            if(!StringUtils.isEmpty(email)) {
+            if (!StringUtils.isEmpty(email)) {
                 user.setActivationCode(UUID.randomUUID().toString());
             }
         }
