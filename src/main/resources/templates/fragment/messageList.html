@@ -27,11 +27,11 @@
         </div>
 
 
-        <div class="col-2 card mx-2" style="width: 18rem;" th:each="message : ${messages}">
+        <div class="col-2 card mx-2" style="width: 18rem;" th:each="message : ${messages}" id="message-list">
             <div th:if="${message.filename} != null">
-                <img class="card-img-top" th:attr="src='/img/' + ${message.filename}">
+                <img class="card-img-top" th:attr="src='/img/' + ${message.filename}"/>
             </div>
-            <div class="card-body">
+            <div class="card-body" th:attr="data-id=${message.id}">
                 <h5 class="card-title" th:text="${message.tag}"></h5>
                 <p class="card-text" th:text="${message.text}"></p>
             </div>
